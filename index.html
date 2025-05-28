@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html> 
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
@@ -96,6 +96,7 @@
       font-weight: bold;
     }
 
+    /* เส้นแบ่งแนวตั้งตรงกลาง */
     .divider {
       position: absolute;
       top: 0;
@@ -153,8 +154,8 @@
   </div>
 
   <script>
-    const sheetId = '1Q3BtiVhjrvgFTIvTnXucu6W5nti_oShVCkarUADogH4';
-    const apiUrl = `https://opensheet.elk.sh/${sheetId}/Sheet1`;
+    const sheetId = '1NQtzSLNh82TvNS4C8I_9ixsWHM-sCHKEwMWx-XDh2h0';
+    const apiUrl = https://opensheet.elk.sh/${sheetId}/Sheet1;
 
     const grabLogo = 'https://drive.google.com/thumbnail?id=1vhOumfzWD7xseUY1YMqfHab7fdbln_Mg';
     const linemanLogo = 'https://drive.google.com/thumbnail?id=1WmMY7RkgnNNJBMLiid2OMevP0d4a-Dgq';
@@ -171,27 +172,17 @@
         ready.innerHTML = '';
 
         data.forEach(row => {
-          const orderNumber = row["กำลังเตรียมอาหาร"]?.trim();
-          const readyNumber = row["พร้อมส่ง"]?.trim();
+          const orderNumber = row["กำลังเตรียมอาหาร"] || row["กำลังเตรียมอาหาร "] || '';
+          const readyNumber = row["พร้อมส่ง"] || row["พร้อมส่ง "] || '';
 
           if (orderNumber) {
             const logo = orderNumber.length === 3 ? grabLogo : linemanLogo;
-            preparing.innerHTML += `
-              <div class="order-row">
-                <img src="${logo}" />
-                <span class="order-number">${orderNumber}</span>
-              </div>
-            `;
+            preparing.innerHTML += <div class="order-row"><img src="${logo}" /><span class="order-number">${orderNumber}</span></div>;
           }
 
           if (readyNumber) {
             const logo = readyNumber.length === 3 ? grabLogo : linemanLogo;
-            ready.innerHTML += `
-              <div class="order-row">
-                <img src="${logo}" />
-                <span class="order-number">${readyNumber}</span>
-              </div>
-            `;
+            ready.innerHTML += <div class="order-row"><img src="${logo}" /><span class="order-number">${readyNumber}</span></div>;
           }
         });
       } catch (err) {
