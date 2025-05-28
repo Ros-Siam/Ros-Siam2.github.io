@@ -1,9 +1,7 @@
 <script>
-  // เปลี่ยน sheetId ให้เป็น Google Sheet ใหม่
-  const sheetId = '1Q3BtiVhjrvgFTIvTnXucu6W5nti_oShVCkarUADogH4';
+  const sheetId = '1Q3BtiVhjrvgFTIvTnXucu6W5nti_oShVCkarUADogH4'; // เปลี่ยนเป็นไฟล์ใหม่ที่คุณให้มา
   const apiUrl = `https://opensheet.elk.sh/${sheetId}/Sheet1`;
 
-  // URL โลโก้
   const grabLogo = 'https://drive.google.com/thumbnail?id=1vhOumfzWD7xseUY1YMqfHab7fdbln_Mg';
   const linemanLogo = 'https://drive.google.com/thumbnail?id=1WmMY7RkgnNNJBMLiid2OMevP0d4a-Dgq';
 
@@ -19,24 +17,24 @@
       ready.innerHTML = '';
 
       data.forEach(row => {
-        const orderPreparing = row["กำลังเตรียมอาหาร"]?.trim();
-        const orderReady = row["พร้อมส่ง"]?.trim();
+        const orderNumber = row["กำลังเตรียมอาหาร"]?.trim();
+        const readyNumber = row["พร้อมส่ง"]?.trim();
 
-        if (orderPreparing) {
-          const logo = orderPreparing.length === 3 ? grabLogo : linemanLogo;
+        if (orderNumber) {
+          const logo = orderNumber.length === 3 ? grabLogo : linemanLogo;
           preparing.innerHTML += `
             <div class="order-row">
-              <img src="${logo}" alt="logo" />
-              <span class="order-number">${orderPreparing}</span>
+              <img src="${logo}" />
+              <span class="order-number">${orderNumber}</span>
             </div>`;
         }
 
-        if (orderReady) {
-          const logo = orderReady.length === 3 ? grabLogo : linemanLogo;
+        if (readyNumber) {
+          const logo = readyNumber.length === 3 ? grabLogo : linemanLogo;
           ready.innerHTML += `
             <div class="order-row">
-              <img src="${logo}" alt="logo" />
-              <span class="order-number">${orderReady}</span>
+              <img src="${logo}" />
+              <span class="order-number">${readyNumber}</span>
             </div>`;
         }
       });
