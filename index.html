@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ขาหมู รสสยาม - คิวออเดอร์</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+    body {
+      font-family: 'TH Sarabun New', 'Kanit', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fefbf3;
+      color: #333;
+    }
+
+    header {
+      background-color: #a52a2a;
+      color: white;
+      text-align: center;
+      padding: 10px 10px;
+    }
+
+    header img {
+      max-height: 80px;
+      vertical-align: middle;
+      margin-right: 15px;
+    }
+
+    header h1 {
+      display: inline-block;
+      font-size: 2.8rem;
+      vertical-align: middle;
+      font-family: 'TH Sarabun New', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 10px 20px 30px;
+    }
+
+    .section {
+      width: 45%;
+      min-width: 300px;
+    }
+
+    .section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      color: #a52a2a;
+      font-family: 'TH Sarabun New', sans-serif;
+      margin-bottom: 15px;
+    }
+
+    .orders {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: auto;
+      gap: 15px;
+      justify-items: center;
+    }
+
+    .order-row {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 95%;
+      max-width: 180px;
+      justify-content: center;
+    }
+
+    .order-row img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .order-number {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .orders {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://drive.google.com/thumbnail?id=1fjf65qn08ihSykXBZOOFQJJzFevHGjMh" alt="logo" />
+    <h1>ขาหมู รสสยาม</h1>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h2>กำลังเตรียมอาหาร</h2>
+      <div id="preparing" class="orders"></div>
+    </div>
+
+    <div class="section">
+      <h2>พร้อมส่ง</h2>
+      <div id="ready" class="orders"></div>
+    </div>
+  </div>
+
+  <script>
+    const sheetId = '1Q3BtiVhjrvgFTIvTnXucu6W5nti_oShVCkarUADogH4';
+    const apiUrl = `https://opensheet.elk.sh/${sheetId}/Sheet1`;
+
+    const grabLogo = 'https://drive.google.com/thumbnail?id=1vhOumfzWD7xseUY1YMqfHab7fdbln_Mg';
+    const linemanLogo = 'https://drive.google.com/thumbnail?id=1WmMY7RkgnNNJBMLiid2OMevP0d4a-Dgq';
+
+    function getLogo(orderNumber) {
+      const cleanNum = orderNumber.replace(/\D/g, '');
+      return cleanNum.length === 3 ? grabLogo : linemanLogo;
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        const preparing = document.getElementById('preparing');
+        const ready = document.getElementById('ready');
+
+        preparing.innerHTML = '';
+        ready.innerHTML = '';
+
+        data.forEach(row => {
+          const orderPreparing = row["กำลังเตรียมอาหาร"]?.trim();
+          const orderReady = row["พร้อมส่ง"]?.trim();
+
+          if (orderPreparing) {
+            const logo = getLogo(orderPreparing);
+            preparing.innerHTML += `<div class="order-row"><img src="${logo}" /><span class="order-number">${orderPreparing}</span></div>`;
+          }
+
+          if (orderReady) {
+            const logo = getLogo(orderReady);
+            ready.innerHTML += `<div class="order-row"><img src="${logo}" /><span class="order-number">${orderReady}</span></div>`;
+          }
+        });
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, 3000);
+  </script>
+</body>
+</html>
